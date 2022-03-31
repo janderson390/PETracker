@@ -53,7 +53,7 @@ WHERE c.relname IN ('users', 'observations', 'students', 'schools', 'tasks') ORD
       const locals = {
         'tables': (tables) ? tables.rows : null,
         'obs': (obs) ? obs.rows : null
-      }
+      };
 
       res.render('pages/db-info', locals);
       client.release();
