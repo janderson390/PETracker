@@ -1,2 +1,2 @@
 # PETracker
-This shows that our integration with pivotal Tracker works
+This shows that integration with pivotal Tracker works
