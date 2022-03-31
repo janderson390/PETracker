@@ -4,7 +4,7 @@ CREATE TABLE users (
   password text NOT NULL
 );
 
-CREATE TABLE users (
+CREATE TABLE students (
   id SERIAL PRIMARY KEY,
   name text NOT NULL,
   school INT NOT NULL,
@@ -27,5 +27,5 @@ CREATE TABLE observations (
 
 CREATE TABLE tasks (
   id SERIAL PRIMARY KEY,
-  name TEXT NOT NULL,
+  name TEXT NOT NULL
 );
