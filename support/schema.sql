@@ -31,4 +31,13 @@ CREATE TABLE tasks (
 );
 
 INSERT INTO tasks (name) VALUES
-  ('Planned Pres.');
+  ('Planned Pres.'),
+  ('Response Pres.'), 
+  ('Monitoring'), 
+  ('Perform Feedback'), 
+  ('Motivation Feedback'), 
+  ('Begin/End Class'), 
+  ('Equipment Management'), 
+  ('Organization'), 
+  ('Behavior Management'), 
+  ('Other Tasks');

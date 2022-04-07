@@ -7,6 +7,7 @@
 </head>
 
 <body>
+
   <h1>Database Tables</h1>
   <ul>
     <% tables.forEach(function(r) { %>
@@ -17,8 +18,23 @@
   </ul>
   <h1>Observations</h1>
   <ul>
-    <% obs.forEach(function(r) { %> 
-      <li><%= r.tasks_id %> for <%= r.duration.minutes || "00" %>:<%= r.duration.seconds || "00" %></li>
+    <% obs.forEach(function(r) { 
+    
+    const tasks = [
+      'Planned Pres.',
+      'Response Pres.', 
+      'Monitoring', 
+      'Perform Feedback', 
+      'Motivation Feedback', 
+      'Begin/End Class', 
+      'Equipment Management', 
+      'Organization', 
+      'Behavior Management', 
+      'Other Tasks'
+    ];
+    
+    %> 
+      <li><%= tasks[r.tasks_id - 1] %> for <%= r.duration.minutes || "00" %>:<%= r.duration.seconds || "00" %></li>
     <% }); %> 
   </ul>
 </body>

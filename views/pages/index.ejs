@@ -4,36 +4,97 @@
 <head>
   <title>PE Tracker</title>
   <meta charset="UTF-8">
+  <style>
+    .btn {
+      display: block;
+      padding: 0.25rem;
+      margin: 0.25rem;
+    }
+  </style>
 </head>
 
 <body>
   <h1>PE Tracker</h1>
   <% tasks.forEach(function(r) {%>
-    <button id='<%= r.id %>' onClick='javascript:logTask(<%= r.id %>);'>
+    <button class="btn" id='<%= r.id %>' onClick='javascript:btnClicked(<%= r.id %>);'>
       <%= r.name %>
     </button>
   <% }); %>
   <script>
     let currentTaskId = null;
+    let btnTimerStarted = [false, false, false, false, false, false, false, false, false, false];
+    let observationStart = [];
 
-    const logTask = async function(id) {
-      const response = await fetch('/log', {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          user_id: -1,
-          student_id: -1,
-          tasks_id: id,
-          duration: "'+00:00:01'"
-        })
-      });
-      const result = await response.json();
-      console.log(result);
-      currentTaskId = id;
-    };
+    function getCurrentTime() {
+      var time = new Date().getTime();
+      // var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+      return time;
+    }
+
+    function getDuration(startTime, endTime) {
+      var duration = endTime - startTime;
+      return duration;
+    }
+
+    function msToHMS(ms) {
+      // Convert to seconds
+      var seconds = ms / 1000;
+      // Extract hours
+      const hours = parseInt( seconds / 3600 ); // 3,600 seconds in 1 hour
+      seconds = seconds % 3600; // seconds remaining after extracting hours
+      // Extract minutes
+      const minutes = parseInt( seconds / 60 ); // 60 seconds in 1 minute
+      // Keep only seconds not extracted to minutes
+      seconds = seconds % 60;
+      return("+" + hours + ":" + minutes + ":" + seconds);
+    }
+
+    const btnClicked = function(id) {
+
+    // Set the color of the button based on the status of the timer
+      currentButton = document.getElementById(id);
+
+      if (!btnTimerStarted[id - 1]) {
+        currentButton.style.backgroundColor = 'green';
+        btnTimerStarted[id - 1] = true;
+
+        observationStart[id - 1] = getCurrentTime();
+        console.log(observationStart[id - 1]);
+      } else {
+        currentButton.style.backgroundColor = 'red';
+        btnTimerStarted[id - 1] = false;
+
+        // Get the duration
+        var duration = getDuration(observationStart[id - 1], getCurrentTime());
+
+        // Convert milliseconds to HH:MM:SS format
+        var formattedDuration = "'" + "\"" + msToHMS(duration) + "\"" + "'";
+
+        // log the task and pass data
+        const logTask = async function() {
+        const response = await fetch('/log', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            user_id: -1,
+            student_id: -1,
+            tasks_id: id,
+            duration: formattedDuration
+          })
+        });
+        const result = await response.json();
+        console.log(result);
+        currentTaskId = id;
+      };
+
+      logTask();
+      }
+
+    }
+    
   </script>
 </body>
 
